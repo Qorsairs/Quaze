@@ -25,20 +25,14 @@ function preload ()
 }
 
 let baseXCoordinate = 160;
-let xSpacing = 100; //will be image height of the gate
+let xSpacing = 100; //will be image width of a gate (i.e. grid column)
 let baseYCoordinate = 100; 
-let ySpacing = 100; //will be image width of the gate
+let ySpacing = 100; //will be image height of a gate (i.e. grid row)
 function xCoordinateGrid(columnNumber){ 
   return baseXCoordinate + xSpacing * columnNumber
 }
 function yCoordianteGrid(rowNumber){ 
   return baseYCoordinate + ySpacing * rowNumber
-}
-function xCoordinateVertWall(columnNumber){ //for 5x5 grid, can have values 0 to 5
-  return baseXCoordinate-50 + xSpacing * columnNumber //TODO: remove magic value 50...half the size of the image height, but asset needs to be changed
-}
-function yCoordinateHorizontalWall(rowNumber){ //for 5x5 grid, can have values 0 to 5
-  return baseYCoordinate-50 + ySpacing * rowNumber //TODO: remove magic value 50...half the size of the image height, but asset needs to be changed
 }
 
 let h = 'hgate'
@@ -61,16 +55,16 @@ function create ()
   for(let row=0; row<6; row++){
     for(let column=0; column<5; column++){
       if(horizontalWalls[row][column]){
-        this.add.image(xCoordinateGrid(column), yCoordinateHorizontalWall(row), 'wallh');
+        this.add.image(xCoordinateGrid(column), yCoordianteGrid(row)-50, 'wallh'); //TODO: remove magic value '50' by changing asset?
       }
       if(verticalWalls[row][column]){
-        this.add.image(xCoordinateVertWall(row), yCoordianteGrid(column), 'wallv');
+        this.add.image(xCoordinateGrid(row)-50, yCoordianteGrid(column), 'wallv'); //TODO: remove magic value '50' by changing asset?
       }
     }
   }
   
   this.add.image(xCoordinateGrid(4.5), yCoordianteGrid(4), 'goal');
-  this.add.image(xCoordinateGrid(5.1), yCoordianteGrid(4), 'solutionleft');
+  this.add.image(xCoordinateGrid(5)+10, yCoordianteGrid(4), 'solutionleft');
   this.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
 }
 
