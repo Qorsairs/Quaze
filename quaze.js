@@ -7,10 +7,18 @@ let config = {
       preload: preload,
       create: create,
       update: update
-  }
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+        debug: false
+    }
+},
 };
 
 let game = new Phaser.Game(config);
+let qubit;
+let walls;
 
 function preload ()
 {
@@ -57,23 +65,44 @@ function create ()
       this.add.image(xCoordinateGrid(row), yCoordianteGrid(column), gameData.gatesGrid[row][column])
     }
   }
+
+  walls = this.physics.add.staticGroup(); //group of static objects
+
   for(let row=0; row<gameData.gridSize.rows+1; row++){
     for(let column=0; column<gameData.gridSize.columns; column++){
       if(gameData.horizontalWalls[row][column]){
-        this.add.image(xCoordinateGrid(column), yCoordianteGrid(row)-50, 'wallh'); //TODO: remove magic value '50' by changing asset?
+        walls.create(xCoordinateGrid(column), yCoordianteGrid(row)-50, 'wallh'); //TODO: remove magic value '50' by changing asset?
       }
       if(gameData.verticalWalls[row][column]){
-        this.add.image(xCoordinateGrid(row)-50, yCoordianteGrid(column), 'wallv'); //TODO: remove magic value '50' by changing asset?
+        walls.create(xCoordinateGrid(row)-50, yCoordianteGrid(column), 'wallv'); //TODO: remove magic value '50' by changing asset?
       }
     }
   }
-  
+
   this.add.image(xCoordinateGrid(4.5), yCoordianteGrid(4), 'goal');
   this.add.image(xCoordinateGrid(5)+10, yCoordianteGrid(4), 'solutionleft');
-  this.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
+  
+  qubit = this.physics.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
+  qubit.setCollideWorldBounds(true); //qubit cannot run off the edge of the game screen
+  
+  this.physics.add.collider(qubit, walls); 
+
+  cursors = this.input.keyboard.createCursorKeys(); 
 }
 
 function update ()
 {
+  if(cursors.left.isDown){
+    qubit.setVelocityX(-100);
+  }else if(cursors.right.isDown){
+    qubit.setVelocityX(100);
+  }else if(cursors.down.isDown){
+    qubit.setVelocityY(100);
+  }else if(cursors.up.isDown){
+    qubit.setVelocityY(-100);
+  }else{
+    qubit.setVelocityX(0);
+    qubit.setVelocityY(0);
+  }
 }
 
