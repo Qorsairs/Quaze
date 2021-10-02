@@ -60,9 +60,21 @@ const gameData = {
 
 function create ()
 {
+  hgates = this.physics.add.staticGroup();
+  xgates = this.physics.add.staticGroup();
+  zgates = this.physics.add.staticGroup();
   for(let row=0; row<gameData.gridSize.rows; row++){
     for(let column=0; column<gameData.gridSize.columns; column++){
-      this.add.image(xCoordinateGrid(row), yCoordianteGrid(column), gameData.gatesGrid[row][column])
+      let gate = gameData.gatesGrid[row][column];
+      if(gate==='hgate'){
+        hgates.create(xCoordinateGrid(row), yCoordianteGrid(column), gate)
+      }
+      if(gate==='xgate'){
+        xgates.create(xCoordinateGrid(row), yCoordianteGrid(column), gate)
+      }
+      if(gate==='zgate'){
+        zgates.create(xCoordinateGrid(row), yCoordianteGrid(column), gate)
+      }
     }
   }
 
@@ -86,6 +98,23 @@ function create ()
   qubit.setCollideWorldBounds(true); //qubit cannot run off the edge of the game screen
   
   this.physics.add.collider(qubit, walls); 
+
+  function hTransform(qubit, gate){
+    console.log('qubit', qubit)
+    console.log('hgate', gate)
+  }
+  function xTransform(qubit, gate){
+    console.log('qubit', qubit)
+    console.log('xgate', gate)
+  }
+  function zTransform(qubit, gate){
+    console.log('qubit', qubit)
+    console.log('zgate', gate)
+  }
+
+  this.physics.add.overlap(qubit, hgates, hTransform, null, this); 
+  this.physics.add.overlap(qubit, xgates, xTransform, null, this); 
+  this.physics.add.overlap(qubit, zgates, zTransform, null, this); 
 
   cursors = this.input.keyboard.createCursorKeys(); 
 }
