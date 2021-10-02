@@ -1,7 +1,7 @@
 let config = {
   type: Phaser.AUTO,
-  width: 730,
-  height: 600,
+  width: 800,
+  height: 650,
   backgroundColor: '#ADD8E6',
   scene: {
       preload: preload,
@@ -22,6 +22,7 @@ let walls;
 let hgates;
 let xgates;
 let zgates;
+let gameOver = false;
 
 function preload ()
 {
@@ -35,9 +36,9 @@ function preload ()
   this.load.image('goal', 'assets/goal.png');
 }
 
-let baseXCoordinate = 160;
+let baseXCoordinate = 180;
 let xSpacing = 100; //will be image width of a gate (i.e. grid column)
-let baseYCoordinate = 100; 
+let baseYCoordinate = 110; 
 let ySpacing = 100; //will be image height of a gate (i.e. grid row)
 function xCoordinateGrid(columnNumber){ 
   return baseXCoordinate + xSpacing * columnNumber
@@ -98,11 +99,13 @@ function create ()
   }
 
   let goal = this.physics.add.image(xCoordinateGrid(4.5), yCoordianteGrid(4), 'goal');
-  this.add.image(xCoordinateGrid(5)+10, yCoordianteGrid(4), 'solutionleft');
+  this.add.image(xCoordinateGrid(5)+10, yCoordianteGrid(4), 'solutionleft').setScale(0.7);
   
-  qubit = this.physics.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
+  qubit = this.physics.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup').setScale(0.7);
   qubit.setCollideWorldBounds(true); //qubit cannot run off the edge of the game screen
   
+  let startText = this.add.text(xCoordinateGrid(-1)-25, yCoordianteGrid(-1)+30, 'Start', { fontSize: '16px', fill: '#000' }); 
+
   this.physics.add.collider(qubit, walls); 
 
   let qubitAngles = {
@@ -111,52 +114,53 @@ function create ()
     2: 180, //down
     3: -90 //left
   }
-  let overlap = ''
   function hTransform(qubit, gate){
-    gate.disableBody(true, true); //does not work if you go back on the gate
-    if (qubitState===0 && overlap!=='hgate') {
+    gate.disableBody(true, true); //TODO: figure out way to enable re-enable the body when the qubit is no longer overlapping a specific gate!
+    if (qubitState===0) {
       qubitState = 1
       qubit.angle = qubitAngles[qubitState];
-    }else if (qubitState===1 && overlap!=='hgate') {
+    }else if (qubitState===1) {
       qubitState = 0
       qubit.angle = qubitAngles[qubitState];
-    }else if (qubitState===2 && overlap!=='hgate') {
+    }else if (qubitState===2) {
       qubitState = 3
       qubit.angle = qubitAngles[qubitState];
-    }else if (qubitState===3 && overlap!=='hgate') {
+    }else if (qubitState===3) {
       qubitState = 2
       qubit.angle = qubitAngles[qubitState];
     }
-    overlap = 'hgate' //BUG: this overlap solution will not work if two Hgates are next to each other on the grid!!!!
+
   }
   function xTransform(qubit, gate){
     gate.disableBody(true, true);
-    if(qubitState===0 && overlap!=='xgate'){
+    if(qubitState===0){
       qubitState = 2
       qubit.angle = qubitAngles[qubitState];
-	  }else if(qubitState===2 && overlap!=='xgate'){
+	  }else if(qubitState===2){
       qubitState = 0
       qubit.angle = qubitAngles[qubitState];
     }
-    overlap = 'xgate' //BUG: this overlap solution will not work if two Xgates are next to each other on the grid!!!!
   }
   function zTransform(qubit, gate){
     gate.disableBody(true, true);
-    if(qubitState===1 && overlap!=='zgate'){
+    if(qubitState===1){
       qubitState = 3
       qubit.angle = qubitAngles[qubitState];
-    }else if(qubitState===3 && overlap!=='zgate'){
+    }else if(qubitState===3){
       qubitState = 1
       qubit.angle = qubitAngles[qubitState];
     }
-    overlap='zgate' //BUG: this overlap solution will not work if two Zgates are next to each other on the grid!!!!
   }
   function winOrLose(qubit, goal){
+    let gameEndText = this.add.text(xCoordinateGrid(5)-45, yCoordianteGrid(5)-30, '', { fontSize: '32px', fill: '#000' }); 
     if(qubitState===gameData.qubitFinalState){
-      console.log('you win') //change to display text on game
+      gameEndText.setText('You Win'); 
     }else{
-      console.log('you lose') //change to display text on game
+      gameEndText.setText('You Lose'); 
     }
+    setTimeout(()=>{
+      gameOver = true
+    }, 250)
   }
 
   this.physics.add.overlap(qubit, hgates, hTransform, null, this); 
@@ -169,6 +173,8 @@ function create ()
 
 function update ()
 {
+  if(gameOver) return;
+
   if(cursors.left.isDown){
     qubit.setVelocityX(-100);
   }else if(cursors.right.isDown){
