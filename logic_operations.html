@@ -1,104 +1,66 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="1894.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 14.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
-    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; color: #000000}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; -webkit-text-stroke: 0px #000000}
-    span.Apple-tab-span {white-space:pre}
-  </style>
-</head>
-<body>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">// the variable state determines the orientation of the qubit (0 = up, 1 = right, 2 = down, 3 = left)</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">var state = 0; <span class="Apple-tab-span">	</span>// state initialised pointing up</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">// transformation rules</span></p>
-<p class="p1"><span class="s1"><br>
-this.physics.add.overlap(qubit, xgate, xtransform, null, this);</span></p>
-<p class="p1"><span class="s1">this.physics.add.overlap(qubit, zgate, ztransform, null, this);</span></p>
-<p class="p1"><span class="s1">this.physics.add.overlap(qubit, hgate, htransform, null, this);</span></p>
-<p class="p1"><span class="s1">this.physics.add.overlap(qubit, end, winning, null, this);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">// x gate transformation (qubit overlaps red square)</span></p>
-<p class="p1"><span class="s1">function xtransform (qubit, xgate)</span></p>
-<p class="p1"><span class="s1">{</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>state = 2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 2) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>state = 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">// z gate transformation (qubit overlaps blue square)</span></p>
-<p class="p1"><span class="s1">function ztransform (qubit, xgate)</span></p>
-<p class="p1"><span class="s1">{</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 1) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>state = 3;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 3) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>state = 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">// h gate transformation (qubit overlaps green square)</span></p>
-<p class="p1"><span class="s1">function xtransform (qubit, xgate)</span></p>
-<p class="p1"><span class="s1">{</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>state = 1;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 1) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>state = 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p3"><span class="s1"></span><br></p>
-<p class="p4"><span class="s2"><span class="Apple-tab-span">	</span></span><span class="s1">f (state = 2) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span></span>state = 3;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p4"><span class="s1"><br>
-</span></p>
-<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 3) {</span></p>
-<p class="p4"><span class="s1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>state = 2;</span></p>
-<p class="p4"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1"><br>
-}</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1"><br>
-</span></p>
-<p class="p1"><span class="s1">// winning condition (qubit overlaps bottom-right square)</span></p>
-<p class="p4"><span class="s1">function winning (qubit, end)</span></p>
-<p class="p4"><span class="s1">{</span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>if (state = 3) {<span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span>// check after transformation</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  <span class="Apple-tab-span">	</span><span class="Apple-tab-span">	</span></span>// winning message<span class="Apple-converted-space"> </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-tab-span">	</span>}</span></p>
-<p class="p1"><span class="s1">}</span></p>
-</body>
-</html>
+// the variable state determines the orientation of the qubit (0 = up, 1 = right, 2 = down, 3 = left)
+ 
+var state = 0; 	// state initialised pointing up
+ 
+ 
+// transformation rules
+ this.physics.add.overlap(qubit, xgate, xtransform, null, this);
+this.physics.add.overlap(qubit, zgate, ztransform, null, this);
+this.physics.add.overlap(qubit, hgate, htransform, null, this);
+this.physics.add.overlap(qubit, end, winning, null, this);
+ 
+// x gate transformation (qubit overlaps red square)
+function xtransform (qubit, xgate)
+{
+ 
+	if (state = 0) {
+	  	state = 2;
+	}
+ 
+	if (state = 2) {
+  		state = 0;
+	}
+ }
+ 
+// z gate transformation (qubit overlaps blue square)
+function ztransform (qubit, xgate)
+{
+ 
+	if (state = 1) {
+	  	state = 3;
+	}
+ 
+	if (state = 3) {
+  		state = 1;
+	}
+ }
+ 
+// h gate transformation (qubit overlaps green square)
+function xtransform (qubit, xgate)
+{
+ 
+	if (state = 0) {
+	  	state = 1;
+	}
+ 
+	if (state = 1) {
+  		state = 0;
+	}
+ 
+	f (state = 2) {
+	  	state = 3;
+	}
+ 
+	if (state = 3) {
+  		state = 2;
+	}
+ }
+ 
+ 
+// winning condition (qubit overlaps bottom-right square)
+function winning (qubit, end)
+{
+	if (state = 3) {		// check after transformation
+  		// winning message 
+	}
+}
