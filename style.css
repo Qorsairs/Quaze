@@ -1,11 +1,13 @@
 body {
     font-family: sans-serif;
+    overflow-x: hidden;
 }
 
 .content{
     margin: 1rem 0 1rem 1rem ;
     display: grid;
     gap: 1rem;
+    z-index: 1;
 }
 
 .hero {
@@ -45,4 +47,13 @@ body {
     background-color: rgba(10, 247, 10, 0.76);
 }
 
-
+.tutorial_image {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    max-width: 90vw;
+    width: 50vw;
+    border: 5px solid rgba(10, 247, 10, 0.76);
+}
