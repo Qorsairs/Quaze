@@ -7,128 +7,102 @@ let config = {
       preload: preload,
       create: create,
       update: update
-  }
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+        debug: false
+    }
+},
 };
 
 let game = new Phaser.Game(config);
+let qubit;
+let walls;
 
 function preload ()
 {
-    this.load.image('xgate', 'assets/xgate.png');
-    this.load.image('zgate', 'assets/zgate.png');
-    this.load.image('hgate', 'assets/hgate.png');
-    this.load.image('wallh', 'assets/wallh.png');
-    this.load.image('wallv', 'assets/wallv.png');
-    this.load.image('qbitup', 'assets/qbitup.png');
-    this.load.image('solutionleft', 'assets/solutionleft.png');
-    this.load.image('goal', 'assets/goal.png');
+  this.load.image('xgate', 'assets/xgate.png');
+  this.load.image('zgate', 'assets/zgate.png');
+  this.load.image('hgate', 'assets/hgate.png');
+  this.load.image('wallh', 'assets/wallh.png');
+  this.load.image('wallv', 'assets/wallv.png');
+  this.load.image('qbitup', 'assets/qbitup.png');
+  this.load.image('solutionleft', 'assets/solutionleft.png');
+  this.load.image('goal', 'assets/goal.png');
 }
 
 let baseXCoordinate = 160;
-let xSpacing = 100; //will be image height of the gate
+let xSpacing = 100; //will be image width of a gate (i.e. grid column)
 let baseYCoordinate = 100; 
-let ySpacing = 100; //will be image width of the gate
-function xCoordinateGrid(columnNumber){ //for 5x5 grid, can have values 0 to 4
+let ySpacing = 100; //will be image height of a gate (i.e. grid row)
+function xCoordinateGrid(columnNumber){ 
   return baseXCoordinate + xSpacing * columnNumber
 }
-function yCoordianteGrid(rowNumber){ //for 5x5 grid, can have values 0 to 4
+function yCoordianteGrid(rowNumber){ 
   return baseYCoordinate + ySpacing * rowNumber
 }
 
-function xCoordinateVertWall(columnNumber){ //for 5x5 grid, can have values 0 to 5
-  return baseXCoordinate-50 + xSpacing * columnNumber //TODO: remove magic value 50...half the size of the image height, but asset needs to be changed
-}
-function yCoordinateVertWall(columnNumber){ //for 5x5 grid, can have values 0 to 4
-  return baseYCoordinate + ySpacing * columnNumber
-}
-
-function xCoordinateHorizontalWall(columnNumber){ //for 5x5 grid, can have values 0 to 4
-  return baseXCoordinate + xSpacing * columnNumber
-}
-function yCoordinateHorizontalWall(rowNumber){ //for 5x5 grid, can have values 0 to 5
-  return baseYCoordinate-50 + ySpacing * rowNumber //TODO: remove magic value 50...half the size of the image height, but asset needs to be changed
+const h = 'hgate'
+const x = 'xgate'
+const z = 'zgate'
+const T = true
+const F = false
+const gameData = {
+  gridSize: {
+    rows: 5,
+    columns: 5
+  }, //the grid is 5x5
+  gatesGrid: [[h, x, z, h, x], [z, h, x, x, h], [h, z, h, x, z], [z, x, z, h, h], [x, h, x, z, h]], //each subarray represents a row starting from the top of the grid
+  horizontalWalls: [[T, T, T, T, T], [F, T, F, T, F], [F, F, T, T, F], [F, F, F, F, F], [F, F, T, T, T], [T, T, T, T, T]], //each subarray represents a row starting from the top of the grid
+  verticalWalls: [[F, T, T, T, T], [F, T, T, T, T], [F, F, F, T, F], [F, F, F, F, F], [F, F, T, T, F], [T, T, T, T, F]] //each subarray represents a column starting from the left of the grid
 }
 
 function create ()
 {
-    this.add.image(xCoordinateGrid(0), yCoordianteGrid(0), 'hgate');
-    this.add.image(xCoordinateGrid(1), yCoordianteGrid(0), 'xgate');
-    this.add.image(xCoordinateGrid(2), yCoordianteGrid(0), 'zgate');
-    this.add.image(xCoordinateGrid(3), yCoordianteGrid(0), 'hgate');
-    this.add.image(xCoordinateGrid(4), yCoordianteGrid(0), 'xgate');
-
-    this.add.image(xCoordinateGrid(0), yCoordianteGrid(1), 'zgate');
-    this.add.image(xCoordinateGrid(1), yCoordianteGrid(1), 'hgate');
-    this.add.image(xCoordinateGrid(2), yCoordianteGrid(1), 'xgate');
-    this.add.image(xCoordinateGrid(3), yCoordianteGrid(1), 'xgate');
-    this.add.image(xCoordinateGrid(4), yCoordianteGrid(1), 'hgate');
-
-    this.add.image(xCoordinateGrid(0), yCoordianteGrid(2), 'hgate');
-    this.add.image(xCoordinateGrid(1), yCoordianteGrid(2), 'zgate');
-    this.add.image(xCoordinateGrid(2), yCoordianteGrid(2), 'hgate');
-    this.add.image(xCoordinateGrid(3), yCoordianteGrid(2), 'xgate');
-    this.add.image(xCoordinateGrid(4), yCoordianteGrid(2), 'zgate');
-
-    this.add.image(xCoordinateGrid(0), yCoordianteGrid(3), 'zgate');
-    this.add.image(xCoordinateGrid(1), yCoordianteGrid(3), 'xgate');
-    this.add.image(xCoordinateGrid(2), yCoordianteGrid(3), 'zgate');
-    this.add.image(xCoordinateGrid(3), yCoordianteGrid(3), 'hgate');
-    this.add.image(xCoordinateGrid(4), yCoordianteGrid(3), 'hgate');
-
-    this.add.image(xCoordinateGrid(0), yCoordianteGrid(4), 'xgate');
-    this.add.image(xCoordinateGrid(1), yCoordianteGrid(4), 'hgate');
-    this.add.image(xCoordinateGrid(2), yCoordianteGrid(4), 'xgate');
-    this.add.image(xCoordinateGrid(3), yCoordianteGrid(4), 'zgate');
-    this.add.image(xCoordinateGrid(4), yCoordianteGrid(4), 'hgate');
-
-    this.add.image(xCoordinateHorizontalWall(0), yCoordinateHorizontalWall(0), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(1), yCoordinateHorizontalWall(0), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(2), yCoordinateHorizontalWall(0), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(3), yCoordinateHorizontalWall(0), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(4), yCoordinateHorizontalWall(0), 'wallh');
-    
-    this.add.image(xCoordinateHorizontalWall(1), yCoordinateHorizontalWall(1), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(3), yCoordinateHorizontalWall(1), 'wallh');
-    
-    this.add.image(xCoordinateHorizontalWall(2), yCoordinateHorizontalWall(2), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(3), yCoordinateHorizontalWall(2), 'wallh');
-    
-    this.add.image(xCoordinateHorizontalWall(2), yCoordinateHorizontalWall(4), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(3), yCoordinateHorizontalWall(4), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(4), yCoordinateHorizontalWall(4), 'wallh');
-    
-    this.add.image(xCoordinateHorizontalWall(0), yCoordinateHorizontalWall(5), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(1), yCoordinateHorizontalWall(5), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(2), yCoordinateHorizontalWall(5), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(3), yCoordinateHorizontalWall(5), 'wallh');
-    this.add.image(xCoordinateHorizontalWall(4), yCoordinateHorizontalWall(5), 'wallh');
-    
-    this.add.image(xCoordinateVertWall(0), yCoordinateVertWall(1), 'wallv');
-    this.add.image(xCoordinateVertWall(0), yCoordinateVertWall(2), 'wallv');
-    this.add.image(xCoordinateVertWall(0), yCoordinateVertWall(3), 'wallv');
-    this.add.image(xCoordinateVertWall(0), yCoordinateVertWall(4), 'wallv');
-    
-    this.add.image(xCoordinateVertWall(1), yCoordinateVertWall(1), 'wallv');
-    this.add.image(xCoordinateVertWall(1), yCoordinateVertWall(2), 'wallv');
-    this.add.image(xCoordinateVertWall(1), yCoordinateVertWall(3), 'wallv');
-    this.add.image(xCoordinateVertWall(1), yCoordinateVertWall(4), 'wallv');
-    
-    this.add.image(xCoordinateVertWall(2), yCoordinateVertWall(3), 'wallv');
-    
-    this.add.image(xCoordinateVertWall(4), yCoordinateVertWall(2), 'wallv');
-    this.add.image(xCoordinateVertWall(4), yCoordinateVertWall(3), 'wallv');
-    
-    this.add.image(xCoordinateVertWall(5), yCoordinateVertWall(0), 'wallv');
-    this.add.image(xCoordinateVertWall(5), yCoordinateVertWall(1), 'wallv');
-    this.add.image(xCoordinateVertWall(5), yCoordinateVertWall(2), 'wallv');
-    this.add.image(xCoordinateVertWall(5), yCoordinateVertWall(3), 'wallv');
-    
-    this.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
-    this.add.image(xCoordinateGrid(5.1), yCoordianteGrid(4), 'solutionleft');
-    this.add.image(xCoordinateGrid(4.5), yCoordianteGrid(4), 'goal');
+  for(let row=0; row<gameData.gridSize.rows; row++){
+    for(let column=0; column<gameData.gridSize.columns; column++){
+      this.add.image(xCoordinateGrid(row), yCoordianteGrid(column), gameData.gatesGrid[row][column])
+    }
   }
+
+  walls = this.physics.add.staticGroup(); //group of static objects
+
+  for(let row=0; row<gameData.gridSize.rows+1; row++){
+    for(let column=0; column<gameData.gridSize.columns; column++){
+      if(gameData.horizontalWalls[row][column]){
+        walls.create(xCoordinateGrid(column), yCoordianteGrid(row)-50, 'wallh'); //TODO: remove magic value '50' by changing asset?
+      }
+      if(gameData.verticalWalls[row][column]){
+        walls.create(xCoordinateGrid(row)-50, yCoordianteGrid(column), 'wallv'); //TODO: remove magic value '50' by changing asset?
+      }
+    }
+  }
+
+  this.add.image(xCoordinateGrid(4.5), yCoordianteGrid(4), 'goal');
+  this.add.image(xCoordinateGrid(5)+10, yCoordianteGrid(4), 'solutionleft');
+  
+  qubit = this.physics.add.image(xCoordinateGrid(-1), yCoordianteGrid(0), 'qbitup');
+  qubit.setCollideWorldBounds(true); //qubit cannot run off the edge of the game screen
+  
+  this.physics.add.collider(qubit, walls); 
+
+  cursors = this.input.keyboard.createCursorKeys(); 
+}
 
 function update ()
 {
+  if(cursors.left.isDown){
+    qubit.setVelocityX(-100);
+  }else if(cursors.right.isDown){
+    qubit.setVelocityX(100);
+  }else if(cursors.down.isDown){
+    qubit.setVelocityY(100);
+  }else if(cursors.up.isDown){
+    qubit.setVelocityY(-100);
+  }else{
+    qubit.setVelocityX(0);
+    qubit.setVelocityY(0);
+  }
 }
 
