@@ -2,7 +2,7 @@ let config = {
   type: Phaser.AUTO,
   width: 800,
   height: 650,
-  backgroundColor: '#ADD8E6',
+  backgroundColor: '#FFFFFF',
   scene: {
       preload: preload,
       create: create,
