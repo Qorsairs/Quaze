@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.hero {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url('https://cdn.pixabay.com/photo/2017/01/31/15/35/ball-2025141_1280.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.hero h1 {
+    font-size: 5em;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    color:rgba(10, 247, 10, 0.76)
+}
+
+.hero .btn {
+    display: block;
+    width: 200px;
+    padding: 1em;
+    margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5em;
+    border: 3px solid white;
+    border-radius: 20px;
+    background-color: rgba(10, 247, 10, 0.76);
+}
+
+.navbar {
+    overflow: hidden;
+    background-color: black;
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+}
+  
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+  
+.navbar a:hover {
+    background: rgba(10, 247, 10, 0.76);
+    color: black;
+}
+  
+.main {
+    margin-top: 30px;
+}
