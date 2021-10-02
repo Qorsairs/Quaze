@@ -8,6 +8,7 @@ nav {
   position: fixed; 
   top: 0; 
   width: 100%; 
+  z-index: 2;
 }
 
 nav a {
@@ -20,6 +21,11 @@ nav a {
 }
 
 nav a:hover {
+  background: rgba(10, 247, 10, 0.76);
+  color: black;
+}
+
+nav .current {
   background: rgba(10, 247, 10, 0.76);
   color: black;
 }
