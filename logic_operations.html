@@ -1,66 +1,0 @@
-// the variable state determines the orientation of the qubit (0 = up, 1 = right, 2 = down, 3 = left)
- 
-var state = 0; 	// state initialised pointing up
- 
- 
-// transformation rules
- this.physics.add.overlap(qubit, xgate, xtransform, null, this);
-this.physics.add.overlap(qubit, zgate, ztransform, null, this);
-this.physics.add.overlap(qubit, hgate, htransform, null, this);
-this.physics.add.overlap(qubit, end, winning, null, this);
- 
-// x gate transformation (qubit overlaps red square)
-function xtransform (qubit, xgate)
-{
- 
-	if (state = 0) {
-	  	state = 2;
-	}
- 
-	if (state = 2) {
-  		state = 0;
-	}
- }
- 
-// z gate transformation (qubit overlaps blue square)
-function ztransform (qubit, xgate)
-{
- 
-	if (state = 1) {
-	  	state = 3;
-	}
- 
-	if (state = 3) {
-  		state = 1;
-	}
- }
- 
-// h gate transformation (qubit overlaps green square)
-function xtransform (qubit, xgate)
-{
- 
-	if (state = 0) {
-	  	state = 1;
-	}
- 
-	if (state = 1) {
-  		state = 0;
-	}
- 
-	f (state = 2) {
-	  	state = 3;
-	}
- 
-	if (state = 3) {
-  		state = 2;
-	}
- }
- 
- 
-// winning condition (qubit overlaps bottom-right square)
-function winning (qubit, end)
-{
-	if (state = 3) {		// check after transformation
-  		// winning message 
-	}
-}

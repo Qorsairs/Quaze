@@ -4,15 +4,22 @@
 
 Welcome to **Quaze**, the quantum maze! This is a puzzle game inspired by _quantum computing_, following rules like those used for transformation of _qubits_, the basic units of information for a quantum computer. 
 
-This project was developed by the team *Qorsairs* for the _Quantum Games Hackathon 2021_.
+This project was developed by the team *Qorsairs* for the _Quantum Games Hackathon 2021_ organised by the _Quantum AI Foundation_.
 
-# Goal 
+## Goal 
 
 The objective of the game is 
 1.	Reach the exit of the maze.
 2.	Have the qubit in the qubit target state, as indicated at the end of the maze.
 
-# How to play
+## Start up game locally
+
+Open up index.html with a server of your choice.
+(e.g. you can install the vscode extension "live server" and open index.html with this). Make sure JS is enabled in your browser.
+
+You can also view the game hosted with github pages at https://qorsairs.github.io/Quaze/
+
+## How to play
 
 Use the arrow keys ↑, ↓, ← & → to move the qubit around the maze. 
 When the qubit moves into a quantum gate (a coloured tile within the maze), it changes its states. 
