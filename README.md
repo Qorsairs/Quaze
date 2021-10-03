@@ -4,7 +4,7 @@
 
 Welcome to **Quaze**, the quantum maze! This is a puzzle game inspired by _quantum computing_, following rules like those used for transformation of _qubits_, the basic units of information for a quantum computer. 
 
-This project was developed by the team *Qorsairs* for the _Quantum Games Hackathon 2021_ organised by the _Quantum AI Foundation_.
+This project was developed for the _Quantum Games Hackathon 2021_ organised by the _Quantum AI Foundation_.
 
 ## Goal 
 
